@@ -1,54 +1,34 @@
 package main
 
 import (
-	"database/sql"
-	"go-echo-vue/handlers"
+	"go-echo-vue/config"
+	"go-echo-vue/controllers/task"
+	"log"
+
+	"os"
 
 	"github.com/labstack/echo"
-	_ "github.com/mattn/go-sqlite3"
+	"github.com/labstack/echo/middleware"
 )
 
 func main() {
-	db := initDB("storage.db")
-	migrate(db)
 
 	e := echo.New()
-
+	e.Use(middleware.Logger())
+	logPath := config.ProjectPath + "logs/echo.log"
+	fp, err := os.OpenFile(logPath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		panic(err)
+	}
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Output: fp,
+	}))
 	e.File("/", "public/index.html")
-	e.GET("/tasks", handlers.GetTasks(db))
-	e.PUT("/tasks", handlers.PutTask(db))
-	e.DELETE("/tasks/:id", handlers.DeleteTask(db))
+	e.GET("/tasks", task.GetTasks())
+	e.GET("/tasks/:id", task.Get())
+	e.POST("/tasks", task.Create())
+	e.PUT("/tasks/:id", task.Update())
+	e.DELETE("/tasks/:id", task.Delete())
 
-	e.Start(":8000")
-}
-
-func initDB(filepath string) *sql.DB {
-	db, err := sql.Open("sqlite3", filepath)
-
-	// Here we check for any db errors then exit
-	if err != nil {
-		panic(err)
-	}
-
-	// If we don't get any errors but somehow still don't get a db connection
-	// we exit as well
-	if db == nil {
-		panic("db nil")
-	}
-	return db
-}
-
-func migrate(db *sql.DB) {
-	sql := `
-    CREATE TABLE IF NOT EXISTS tasks(
-        id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-        name VARCHAR NOT NULL
-    );
-    `
-
-	_, err := db.Exec(sql)
-	// Exit if something goes wrong with our SQL statement above
-	if err != nil {
-		panic(err)
-	}
+	log.Fatal(e.Start(config.HOST + config.PORT))
 }

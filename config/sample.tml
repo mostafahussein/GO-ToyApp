@@ -1,0 +1,54 @@
+[production]
+DB_DATABASE = "document"
+DB_HOST = "localhost"
+DB_PASS = ""
+DB_USER = "root"
+
+URL = "api.document.com"
+SITE_TITLE = "DOC"
+HASH_SALT = ""
+
+SLACK_WEBHOOKURL = ""
+SLACK_FACEICON = ""
+SLACK_CNANNEL = ""
+SLACK_USERNAME = ""
+
+FRONT_DOMEIN = "document.com"
+CORS_DOMEIN = ["http://document.com"]
+
+[develop]
+DB_DATABASE = "document"
+DB_HOST = "localhost"
+DB_PASS = ""
+DB_USER = "root"
+
+URL = "localhost:5000"
+SITE_TITLE = "DOC"
+HASH_SALT = ""
+
+SLACK_WEBHOOKURL = ""
+SLACK_FACEICON = ""
+SLACK_CNANNEL = ""
+SLACK_USERNAME = ""
+
+FRONT_DOMEIN = "localhost:7000"
+CORS_DOMEIN = ["http://localhost:7000", "http://localhost:3000"]
+
+[test]
+DB_DATABASE = "circle_default"
+DB_HOST = "127.0.0.1"
+DB_USER = "root"
+DB_PASS = ""
+
+
+URL = "localhost:5000"
+SITE_TITLE = "DOC"
+HASH_SALT = ""
+
+SLACK_WEBHOOKURL = ""
+SLACK_FACEICON = ""
+SLACK_CNANNEL = ""
+SLACK_USERNAME = ""
+
+FRONT_DOMEIN = "localhost:7000"
+CORS_DOMEIN = ["http://localhost:7000", "http://localhost:3000"]

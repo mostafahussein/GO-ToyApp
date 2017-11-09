@@ -1,10 +1,6 @@
 package models
 
-import (
-	"database/sql"
-
-	_ "github.com/mattn/go-sqlite3"
-)
+import "log"
 
 // Task is a struct containing Task data
 type Task struct {
@@ -12,72 +8,55 @@ type Task struct {
 	Name string `json:"name"`
 }
 
-// TaskCollection is collection of Tasks
-type TaskCollection struct {
-	Tasks []Task `json:"items"`
+// SearchTask ...
+func SearchTask(pages int, search string) []Task {
+	tasks := []Task{}
+	db.Limit(20).Offset(pages).Find(&tasks)
+	return tasks
 }
 
-func GetTasks(db *sql.DB) TaskCollection {
-	sql := "SELECT * FROM tasks"
-	rows, err := db.Query(sql)
-	// Exit if the SQL doesn't work for some reason
-	if err != nil {
-		panic(err)
-	}
-	// make sure to cleanup when the program exits
-	defer rows.Close()
-
-	result := TaskCollection{}
-	for rows.Next() {
-		task := Task{}
-		err2 := rows.Scan(&task.ID, &task.Name)
-		// Exit if we get an error
-		if err2 != nil {
-			panic(err2)
-		}
-		result.Tasks = append(result.Tasks, task)
-	}
-	return result
+// FindTask ...
+func FindTask(id int) Task {
+	task := Task{}
+	db.Find(&task, id)
+	return task
 }
 
-func PutTask(db *sql.DB, name string) (int64, error) {
-	sql := "INSERT INTO tasks(name) VALUES(?)"
-
-	// Create a prepared SQL statement
-	stmt, err := db.Prepare(sql)
-	// Exit if we get an error
-	if err != nil {
-		panic(err)
-	}
-	// Make sure to cleanup after the program exits
-	defer stmt.Close()
-
-	// Replace the '?' in our prepared statement with 'name'
-	result, err2 := stmt.Exec(name)
-	// Exit if we get an error
-	if err2 != nil {
-		panic(err2)
+// CreateTask ...
+func CreateTask(params Task) (res Task, err error) {
+	if err = validate.Struct(params); err != nil {
+		log.Printf("data : %v", err)
+		return res, err
 	}
 
-	return result.LastInsertId()
+	if err := db.Create(&params).Error; err != nil {
+		return res, err
+	}
+	return params, err
 }
 
-func DeleteTask(db *sql.DB, id int) (int64, error) {
-	sql := "DELETE FROM tasks WHERE id = ?"
-
-	// Create a prepared SQL statement
-	stmt, err := db.Prepare(sql)
-	// Exit if we get an error
-	if err != nil {
-		panic(err)
+// SaveTask ...
+func SaveTask(params Task) (res Task, err error) {
+	if err = validate.Struct(params); err != nil {
+		log.Printf("data : %v", err)
+		return res, err
 	}
 
-	// Replace the '?' in our prepared statement with 'id'
-	result, err2 := stmt.Exec(id)
-	// Exit if we get an error
-	if err2 != nil {
-		panic(err2)
+	if err := db.Save(&params).Error; err != nil {
+		return res, err
+	}
+	return params, err
+}
+
+// DeleteTask ...
+func DeleteTask(params Task) (res Task, err error) {
+	if err = validate.Struct(params); err != nil {
+		log.Printf("data : %v", err)
+		return res, err
 	}
 
-	return result.RowsAffected()
+	if err := db.Delete(&params).Error; err != nil {
+		return res, err
+	}
+	return params, err
 }

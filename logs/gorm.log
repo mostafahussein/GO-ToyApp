@@ -1,0 +1,29 @@
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/migrate.go:5161.873867msCREATE TABLE "task" ("id" integer primary key autoincrement,"name" varchar(255) ) [] 0
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:12493.072µsSELECT * FROM "task"   LIMIT 20 OFFSET 0[] 0
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:12424.94µsSELECT * FROM "task"   LIMIT 20 OFFSET 0[] 0
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:12496.283µsSELECT * FROM "task"   LIMIT 20 OFFSET 0[] 0
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:141.176549msSELECT * FROM "task"   LIMIT 20 OFFSET 0[] 0
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:25846.895µsINSERT INTO "task" ("name") VALUES (?)[Foobar] 1
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:14585.225µsSELECT * FROM "task"   LIMIT 20 OFFSET 0[] 1
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:14238.536µsSELECT * FROM "task"   LIMIT 20 OFFSET 0[] 1
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:14443.463µsSELECT * FROM "task"   LIMIT 20 OFFSET 0[] 1
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:14609.941µsSELECT * FROM "task"   LIMIT 20 OFFSET 0[] 1
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:14336.831µsSELECT * FROM "task"   LIMIT 20 OFFSET 0[] 1
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:32497.195µsINSERT INTO "task" ("name") VALUES (?)[Bar] 1
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:21433.635µsSELECT * FROM "task"  WHERE ("task"."id" = ?)[1] 1
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:21351.482µsSELECT * FROM "task"  WHERE ("task"."id" = ?)[2] 1
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:21736.954µsSELECT * FROM "task"  WHERE ("task"."id" = ?)[1] 1
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:45338.657µsINSERT INTO "task" ("name") VALUES (?)[foo] 1
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:14441.716µsSELECT * FROM "task"   LIMIT 20 OFFSET 0[] 3
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:21415.519µsSELECT * FROM "task"  WHERE ("task"."id" = ?)[1] 1
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:45520.747µsUPDATE "task" SET "name" = ?  WHERE "task"."id" = ?[foo 1] 1
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:14532.986µsSELECT * FROM "task"   LIMIT 20 OFFSET 0[] 3
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:21333.518µsSELECT * FROM "task"  WHERE ("task"."id" = ?)[3] 1
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:45217.329µsUPDATE "task" SET "name" = ?  WHERE "task"."id" = ?[foobar 3] 1
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:14441.355µsSELECT * FROM "task"   LIMIT 20 OFFSET 0[] 3
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:21372.598µsSELECT * FROM "task"  WHERE ("task"."id" = ?)[2] 1
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:45308.14µsUPDATE "task" SET "name" = ?  WHERE "task"."id" = ?[bar 2] 1
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:14413.446µsSELECT * FROM "task"   LIMIT 20 OFFSET 0[] 3
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:21464.318µsSELECT * FROM "task"  WHERE ("task"."id" = ?)[3] 1
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:58294.959µsDELETE FROM "task"  WHERE "task"."id" = ?[3] 1
+sql/home/mhussein/.gvm/pkgsets/go1.9/global/src/go-echo-vue/models/tasks.go:14373.591µsSELECT * FROM "task"   LIMIT 20 OFFSET 0[] 2
