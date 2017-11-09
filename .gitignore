@@ -2,3 +2,4 @@ storage.db
 test.db
 document
 config.tml
+*.log
