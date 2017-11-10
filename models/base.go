@@ -2,6 +2,8 @@
 package models
 
 import (
+	"database/sql"
+	"encoding/json"
 	"go-echo-vue/config"
 	"log"
 	"os"
@@ -35,4 +37,34 @@ func DB() *gorm.DB {
 	db.SetLogger(log.New(file, "", 0))
 
 	return db
+}
+
+// NullString ...
+type NullString struct {
+	sql.NullString
+}
+
+// MarshalJSON ...
+func (s NullString) MarshalJSON() ([]byte, error) {
+	if s.Valid {
+		return json.Marshal(s.String)
+	}
+	return json.Marshal(nil)
+}
+
+// UnmarshalJSON ...
+func (s *NullString) UnmarshalJSON(data []byte) error {
+	var str string
+	json.Unmarshal(data, &str)
+	s.String = str
+	s.Valid = str != ""
+	return nil
+}
+
+// NewNullString ...
+func NewNullString(s string) NullString {
+	return NullString{sql.NullString{
+		String: s,
+		Valid:  s != ""},
+	}
 }
