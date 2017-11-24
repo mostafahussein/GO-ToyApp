@@ -11,8 +11,8 @@ import (
 	"github.com/labstack/echo"
 )
 
-// GetTasks endpoint
-func GetTasks() echo.HandlerFunc {
+// Index endpoint
+func Index() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		query := c.QueryParam("q")
 		pages := c.QueryParam("pages")
@@ -23,7 +23,6 @@ func GetTasks() echo.HandlerFunc {
 		var number int
 		number, _ = strconv.Atoi(pages)
 		data := models.SearchTask((int(number)-1)*20, query)
-
 		if size := len(data); size == 0 {
 			return c.JSON(http.StatusNotFound, config.NotFound)
 		}
@@ -31,7 +30,8 @@ func GetTasks() echo.HandlerFunc {
 	}
 }
 
-func Get() echo.HandlerFunc {
+// Show ...
+func Show() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
@@ -104,6 +104,7 @@ func Update() echo.HandlerFunc {
 	}
 }
 
+// Delete ...
 func Delete() echo.HandlerFunc {
 	return func(c echo.Context) (err error) {
 		id, err := strconv.Atoi(c.Param("id"))

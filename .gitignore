@@ -1,5 +1,4 @@
-storage.db
-test.db
+*.db
 document
 config.tml
 *.log

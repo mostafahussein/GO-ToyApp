@@ -2,69 +2,10 @@
 package models
 
 import (
-	"database/sql"
-	"encoding/json"
-	"go-echo-vue/config"
-	"log"
-	"os"
-
-	"github.com/jinzhu/gorm"
-	// sqlite3
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"github.com/asdine/storm"
 	validator "gopkg.in/go-playground/validator.v9"
 )
 
-var db = DB()
+var db, err = storm.Open("my.db")
+
 var validate = validator.New()
-
-// DB connect database. setting logging.
-func DB() *gorm.DB {
-	db, err := gorm.Open(config.DbType, config.DbURL)
-	if err != nil {
-		panic("failed to connect database")
-	}
-
-	logPath := config.ProjectPath + "logs/gorm.log"
-	file, err := os.OpenFile(logPath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-	if err != nil {
-		panic(err)
-	}
-	log.SetOutput(file)
-
-	db.SingularTable(true)
-	db.LogMode(true)
-	db = db.Debug()
-	db.SetLogger(log.New(file, "", 0))
-
-	return db
-}
-
-// NullString ...
-type NullString struct {
-	sql.NullString
-}
-
-// MarshalJSON ...
-func (s NullString) MarshalJSON() ([]byte, error) {
-	if s.Valid {
-		return json.Marshal(s.String)
-	}
-	return json.Marshal(nil)
-}
-
-// UnmarshalJSON ...
-func (s *NullString) UnmarshalJSON(data []byte) error {
-	var str string
-	json.Unmarshal(data, &str)
-	s.String = str
-	s.Valid = str != ""
-	return nil
-}
-
-// NewNullString ...
-func NewNullString(s string) NullString {
-	return NullString{sql.NullString{
-		String: s,
-		Valid:  s != ""},
-	}
-}

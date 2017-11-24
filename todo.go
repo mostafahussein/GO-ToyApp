@@ -3,7 +3,6 @@ package main
 import (
 	"go-echo-vue/config"
 	"go-echo-vue/controllers/task"
-	"go-echo-vue/controllers/user"
 	"go-echo-vue/models"
 	"log"
 
@@ -27,8 +26,8 @@ func main() {
 	}))
 	e.File("/", "public/index.html")
 
-	e.POST("/v1/register", user.Register())
-	e.POST("/v1/login", user.Login())
+	// e.POST("/v1/register", user.Register())
+	// e.POST("/v1/login", user.Login())
 
 	r := e.Group("/v1/")
 	jwtconfig := middleware.JWTConfig{
@@ -36,11 +35,11 @@ func main() {
 		SigningKey: []byte("secret"),
 	}
 	r.Use(middleware.JWTWithConfig(jwtconfig))
-	r.GET("user", user.Get())
-	r.PUT("user", user.Update())
+	// r.GET("user", user.Get())
+	// r.PUT("user", user.Update())
 
-	e.GET("/tasks", task.GetTasks())
-	e.GET("/tasks/:id", task.Get())
+	e.GET("/tasks", task.Index())
+	e.GET("/tasks/:id", task.Show())
 	e.POST("/tasks", task.Create())
 	e.PUT("/tasks/:id", task.Update())
 	e.DELETE("/tasks/:id", task.Delete())
