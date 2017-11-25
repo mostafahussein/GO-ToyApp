@@ -1,29 +1,24 @@
 package models
 
 import (
+	"go-echo-vue/config"
+	"log"
 	"time"
 
+	"github.com/asdine/storm"
+	"github.com/asdine/storm/q"
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
 type (
 	// User ...
 	User struct {
-		ID       int       `db:"id" json:"id"`
-		Name     string    `db:"name" json:"name" gorm:"not null" validate:"required"`
-		Email    string    `db:"email" json:"email" gorm:"unique_index" validate:"email"`
-		Password string    `db:"password" json:"password" validate:"min=8"`
-		Created  time.Time `json:"created" sql:"DEFAULT:current_timestamp"`
-		Updated  time.Time `json:"updated" sql:"DEFAULT:current_timestamp"`
-	}
-
-	// UserJSON ...
-	UserJSON struct {
-		ID      int       `json:"id"`
-		Name    string    `json:"name"`
-		Email   string    `db:"email" json:"email" gorm:"unique_index" validate:"email"`
-		Created time.Time `json:"created"`
-		Updated time.Time `json:"updated"`
+		ID       int       `storm:"id,increment" json:"id"`
+		Name     string    `json:"name" validate:"required"`
+		Email    string    `json:"email" validate:"required,email"`
+		Password string    `json:"password" validate:"min=8"`
+		Created  time.Time `json:"created"`
+		Updated  time.Time `json:"updated"`
 	}
 
 	// JwtCustomClaims ...
@@ -38,78 +33,76 @@ type (
 	}
 )
 
-// TableName ...
-// func (UserJSON) TableName() string {
-// 	return "user"
-// }
+// CreateUser ...
+func CreateUser(param User) (res Token, err error) {
+	user := param
+	if err := db.One("Email", user.Email, &user); err == storm.ErrNotFound {
+		if err := db.Save(&user); err != nil {
+			return res, err
+		}
+	}
 
-// // CreateUser ...
-// func CreateUser(param User) (res Token, err error) {
-// 	user := param
-// 	if err := db.Create(&user).Error; err != nil {
-// 		log.Printf("data : %v", err)
-// 		fmt.Println(err)
-// 		return res, err
-// 	}
+	token, err := createToken(user.ID)
+	if err != nil {
+		return res, err
+	}
 
-// 	token, err := createToken(user.ID)
-// 	if err != nil {
-// 		return res, err
-// 	}
+	res = Token{}
+	res.Token = token
+	return res, err
+}
 
-// 	res = Token{}
-// 	res.Token = token
-// 	return res, err
-// }
+// Login ...
+func Login(param User) (res Token, err error) {
+	user := param
+	query := db.Select(q.Eq("Email", user.Email))
+	query.First(&user)
 
-// // Login ...
-// func Login(param User) (res Token, err error) {
-// 	user := param
-// 	db.Where(&user).First(&user)
+	if user.ID == 0 {
+		return res, err
+	}
 
-// 	if user.ID == 0 {
-// 		return res, err
-// 	}
+	token, err := createToken(user.ID)
+	if err != nil {
+		return res, err
+	}
 
-// 	token, err := createToken(user.ID)
-// 	if err != nil {
-// 		return res, err
-// 	}
+	res = Token{}
+	res.Token = token
+	return res, err
+}
 
-// 	res = Token{}
-// 	res.Token = token
-// 	return res, err
-// }
+// createToken ...
+func createToken(id int) (res string, err error) {
+	token := jwt.New(jwt.SigningMethodHS256)
+	claims := token.Claims.(jwt.MapClaims)
+	claims["id"] = id
+	claims["exp"] = config.JwtExp
+	res, err = token.SignedString([]byte("secret"))
+	if err != nil {
+		return res, err
+	}
+	return res, err
+}
 
-// // createToken ...
-// func createToken(id int) (res string, err error) {
-// 	token := jwt.New(jwt.SigningMethodHS256)
-// 	claims := token.Claims.(jwt.MapClaims)
-// 	claims["id"] = id
-// 	claims["exp"] = config.JwtExp
-// 	res, err = token.SignedString([]byte("secret"))
-// 	if err != nil {
-// 		return res, err
-// 	}
-// 	return res, err
-// }
+// SaveUser ...
+func SaveUser(params User) (res User, err error) {
+	if err = validate.Struct(params); err != nil {
+		log.Printf("data : %v", err)
+		return res, err
+	}
 
-// // SaveUser ...
-// func SaveUser(params User) (res User, err error) {
-// 	if err = validate.Struct(params); err != nil {
-// 		log.Printf("data : %v", err)
-// 		return res, err
-// 	}
+	if err := db.Save(&params); err != nil {
+		return res, err
+	}
+	return params, err
+}
 
-// 	if err := db.Save(&params).Error; err != nil {
-// 		return res, err
-// 	}
-// 	return params, err
-// }
-
-// // FindUser ...
-// func FindUser(id int) UserJSON {
-// 	user := UserJSON{}
-// 	db.First(&user, id)
-// 	return user
-// }
+// FindUser ...
+func FindUser(id int) User {
+	user := User{}
+	log.Printf("%v", id)
+	err = db.One("ID", id, &user)
+	log.Printf("%v", err)
+	return user
+}

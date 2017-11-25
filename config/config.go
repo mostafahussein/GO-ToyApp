@@ -24,12 +24,6 @@ var SiteTitle = conf.SiteTitle
 // HashSalt ...
 var HashSalt = conf.HashSalt
 
-// DbType ...
-const DbType = "sqlite3"
-
-// DbURL ...
-var DbURL = conf.DbDatabase
-
 // JwtExp ...
 var JwtExp = time.Now().Add(time.Hour * 168).Unix()
 
@@ -49,14 +43,10 @@ type (
 
 	// Config ...
 	Config struct {
-		DbDatabase string `toml:"DB_DATABASE"`
-		DbHost     string `toml:"DB_HOST"`
-		DbUser     string `toml:"DB_USER"`
-		DbPass     string `toml:"DB_PASS"`
-		HOST       string `toml:"HOST"`
-		URL        string `toml:"URL"`
-		SiteTitle  string `toml:"SITE_TITLE"`
-		HashSalt   string `toml:"HASH_SALT"`
+		HOST      string `toml:"HOST"`
+		URL       string `toml:"URL"`
+		SiteTitle string `toml:"SITE_TITLE"`
+		HashSalt  string `toml:"HASH_SALT"`
 	}
 )
 
