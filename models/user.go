@@ -55,7 +55,7 @@ func CreateUser(param User) (res Token, err error) {
 // Login ...
 func Login(param User) (res Token, err error) {
 	user := param
-	query := db.Select(q.Eq("Email", user.Email))
+	query := db.Select(q.Eq("Email", user.Email), q.Eq("Password", user.Password))
 	query.First(&user)
 
 	if user.ID == 0 {
@@ -101,8 +101,6 @@ func SaveUser(params User) (res User, err error) {
 // FindUser ...
 func FindUser(id int) User {
 	user := User{}
-	log.Printf("%v", id)
 	err = db.One("ID", id, &user)
-	log.Printf("%v", err)
 	return user
 }

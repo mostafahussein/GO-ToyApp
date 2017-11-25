@@ -69,15 +69,17 @@ func validation(user models.User) (res models.User, err error) {
 	}
 
 	password := res.Password
-	//if !password.Valid || !res.Email.Valid {
-	//		err = errors.New("password and email are required,")
-	//		return res, err
+	if password != "" || res.Email != "" {
+		err = errors.New("password and email are required,")
+		return res, err
+	}
 	if utf8.RuneCountInString(password) < 8 {
 		err = errors.New("password is short,")
 		return res, err
 	}
 
 	res.Password = toHashFromScrypt(password)
+	log.Printf(res.Password)
 	return res, err
 }
 
@@ -93,9 +95,9 @@ func Login() echo.HandlerFunc {
 		}
 
 		password := param.Password
-		//if password.Valid {
-		password = toHashFromScrypt(password)
-		//}
+		if password != "" {
+			password = toHashFromScrypt(password)
+		}
 
 		user := models.User{
 			Email:    param.Email,
