@@ -39,12 +39,11 @@ func main() {
 	r.GET("user", user.Get())
 	r.PUT("user", user.Update())
 
-	e.Use(middleware.JWTWithConfig(jwtconfig))
-	e.GET("/tasks", task.Index())
-	e.GET("/tasks/:id", task.Show())
-	e.POST("/tasks", task.Create())
-	e.PUT("/tasks/:id", task.Update())
-	e.DELETE("/tasks/:id", task.Delete())
+	r.GET("tasks", task.Index())
+	r.GET("tasks/:id", task.Show())
+	r.POST("tasks", task.Create())
+	r.PUT("tasks/:id", task.Update())
+	r.DELETE("tasks/:id", task.Delete())
 
 	log.Fatal(e.Start(config.HOST + config.PORT))
 }
