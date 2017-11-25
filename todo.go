@@ -39,6 +39,7 @@ func main() {
 	r.GET("user", user.Get())
 	r.PUT("user", user.Update())
 
+	e.Use(middleware.JWTWithConfig(jwtconfig))
 	e.GET("/tasks", task.Index())
 	e.GET("/tasks/:id", task.Show())
 	e.POST("/tasks", task.Create())
