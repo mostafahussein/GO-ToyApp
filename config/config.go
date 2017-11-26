@@ -25,7 +25,7 @@ var SiteTitle = conf.SiteTitle
 var HashSalt = conf.HashSalt
 
 // JwtExp ...
-var JwtExp = time.Now().Add(time.Hour * 168).Unix()
+var JwtExp = time.Now().Add(time.Hour * 1).Unix()
 
 // GOPATH ...
 var GOPATH = os.Getenv("GOPATH")
