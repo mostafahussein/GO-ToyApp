@@ -16,7 +16,7 @@ type (
 		ID       int       `storm:"id,increment" json:"id"`
 		Name     string    `json:"name" validate:"required"`
 		Email    string    `json:"email" validate:"required,email"`
-		Password string    `json:"password" validate:"min=8"`
+		Password string    `json:"password" validate:"required,min=8"`
 		Created  time.Time `json:"created"`
 		Updated  time.Time `json:"updated"`
 	}
