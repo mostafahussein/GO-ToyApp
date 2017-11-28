@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"go-echo-vue/config"
 	"log"
 	"time"
@@ -40,15 +41,17 @@ func CreateUser(param User) (res Token, err error) {
 		if err := db.Save(&user); err != nil {
 			return res, err
 		}
-	}
+		token, err := createToken(user.ID)
+		if err != nil {
+			return res, err
+		}
 
-	token, err := createToken(user.ID)
-	if err != nil {
+		res = Token{}
+		res.Token = token
 		return res, err
 	}
 
-	res = Token{}
-	res.Token = token
+	err = errors.New("Email already exist")
 	return res, err
 }
 
